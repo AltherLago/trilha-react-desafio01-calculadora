@@ -1,4 +1,3 @@
-
 import Input from './components/Input';
 import Button from './components/Button';
 
@@ -10,7 +9,7 @@ const App = () => {
   const [currentNumber, setCurrentNumber] = useState('0');
   const [firstNumber, setFirstNumber] = useState('0');
   const [operation, setOperation] = useState('');
-
+  
   const handleOnClear = () => {
     setCurrentNumber('0')
     setFirstNumber('0')
@@ -19,6 +18,10 @@ const App = () => {
 
   const handleAddNumber = (num) => {
     setCurrentNumber(prev => `${prev === '0' ? '' : prev}${num}`)
+  }
+
+  const handleRemoveNumber = (num) => {
+    setCurrentNumber(num.slice(0,-1))
   }
 
   const handleSumNumbers = () => {
@@ -42,12 +45,41 @@ const App = () => {
         setCurrentNumber('0')
         setOperation('-')
     }else {
-      const sum = Number(firstNumber) - Number(currentNumber);
-      setCurrentNumber(String(sum))
+      const subtract = Number(firstNumber) - Number(currentNumber);
+      setCurrentNumber(String(subtract))
       setOperation('')
     }
 
   }
+
+  const handleMultiplicationNumbers = () => {
+
+    if(firstNumber === '0'){
+        setFirstNumber(String(currentNumber));
+        setCurrentNumber('0')
+        setOperation('x')
+    }else {
+      const multiplication = Number(firstNumber) * Number(currentNumber);
+      setCurrentNumber(String(multiplication))
+      setOperation('')
+    }
+
+  }
+
+  const handleDivisionNumbers = () => {
+
+    if(firstNumber === '0'){
+        setFirstNumber(String(currentNumber));
+        setCurrentNumber('0')
+        setOperation('/')
+    }else {
+      const division = Number(firstNumber) / Number(currentNumber);
+      setCurrentNumber(String(division))
+      setOperation('')
+    }
+
+  }
+
 
   const handleEquals = () => {
 
@@ -58,6 +90,12 @@ const App = () => {
             break;
           case '-':
             handleMinusNumbers();
+            break;
+          case 'x':
+            handleMultiplicationNumbers();
+            break;
+          case '/':
+            handleDivisionNumbers();
             break;
           default: 
             break;
@@ -71,10 +109,10 @@ const App = () => {
       <Content>
         <Input value={currentNumber}/>
         <Row>
-          <Button label="x"/>
-          <Button label="/"/>
+          <Button label="x" onClick={handleMultiplicationNumbers}/>
+          <Button label="/" onClick={handleDivisionNumbers}/>
           <Button label="c" onClick={handleOnClear}/>
-          <Button label="."/>
+          <Button label="<-"onClick={() => handleRemoveNumber(currentNumber)}/>
         </Row>
         <Row>
           <Button label="7" onClick={() => handleAddNumber('7')}/>
